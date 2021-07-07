@@ -1,6 +1,6 @@
 {
   "name": "searchanise/logger",
-  "description": "Monolog bootstrap with predefined formatter and registered error handler\n\n",
+  "description": "Monolog bootstrap with predefined formatter and registered error handler",
   "minimum-stability": "stable",
   "license": "proprietary",
   "authors": [
