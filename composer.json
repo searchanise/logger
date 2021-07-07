@@ -1,0 +1,26 @@
+{
+  "name": "oshabashov/logger",
+  "description": "Monolog bootstrap with predefined formatter and registered error handler\n\n",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Oleg Shabashov",
+      "email": "oshabashov@cs-cart.com"
+    }
+  ],
+  "config": {
+    "sort-packages": true
+  },
+  "autoload": {
+    "files": [
+      "src/bootstrap.php"
+    ]
+  },
+  "require": {
+    "monolog/monolog": "^1.26"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-latest"
+  }
+}
