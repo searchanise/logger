@@ -1,5 +1,5 @@
 {
-  "name": "oshabashov/logger",
+  "name": "searchanise/logger",
   "description": "Monolog bootstrap with predefined formatter and registered error handler\n\n",
   "minimum-stability": "stable",
   "license": "proprietary",
