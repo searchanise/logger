@@ -13,11 +13,16 @@ use Monolog\Processor\MemoryUsageProcessor;
 use Monolog\Processor\WebProcessor;
 
 /**
+ * Usage
+ *
+ * @param string $channelName
+ * @param string $logFileName
+ * @param array $extra              Any extra information
  * @return Logger
  * @throws Exception                If a missing directory is not buildable
  * @throws InvalidArgumentException If stream is not a resource or string
  */
-function bootstrap($channelName, $logFileName)
+function bootstrap($channelName, $logFileName, $extra = [])
 {
 	$log = new Logger($channelName);
 	$handler = new StreamHandler($logFileName);
@@ -32,13 +37,16 @@ function bootstrap($channelName, $logFileName)
 	$log->pushProcessor(new GitProcessor());
 	$log->pushProcessor(new MemoryUsageProcessor());
 
-	$log->pushProcessor(function ($record) {
+	$log->pushProcessor(function ($record) use ($extra) {
 		if (isset($_SESSION['auth']['parent_engine_id'])) {
 			$record['extra']['parent_engine_id'] = $_SESSION['auth']['parent_engine_id'];
 		}
 		if (isset($_SESSION['auth']['current_engine_id'])) {
 			$record['extra']['current_engine_id'] = $_SESSION['auth']['current_engine_id'];
 		}
+
+		$record['extra'] = array_merge($record['extra'], $extra);
+
 		return $record;
 	});
 

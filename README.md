@@ -19,7 +19,7 @@ composer.json
 ```
 
 ```shell
-composer require searchanise/logger:^1.0
+composer require searchanise/logger:^2.0
 ```
 
 # Usage
@@ -27,9 +27,9 @@ composer require searchanise/logger:^1.0
 ```php
 
 $channelName = 'core';
-$logFileName = '/var/log/api-processor.log';
+$logFileName = '/var/log/searchanise/core.log';
 
-$logger = Searchanise\Logger\bootstrap($channelName, $logFileName);
+$logger = Searchanise\Logger\bootstrap($channelName, $logFileName, ['project' => 'wix']);
 
 $logger->addInfo('This is info');
 ```
