@@ -8,6 +8,9 @@ use Monolog\ErrorHandler;
 use Monolog\Formatter\JsonFormatter;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
+use Monolog\Processor\GitProcessor;
+use Monolog\Processor\MemoryUsageProcessor;
+use Monolog\Processor\WebProcessor;
 
 /**
  * @return Logger
@@ -25,13 +28,11 @@ function bootstrap($channelName, $logFileName)
 	$handler->setFormatter($formatter);
 	$log->pushHandler($handler);
 
+	$log->pushProcessor(new WebProcessor());
+	$log->pushProcessor(new GitProcessor());
+	$log->pushProcessor(new MemoryUsageProcessor());
+
 	$log->pushProcessor(function ($record) {
-		if (isset($_SERVER['REQUEST_URI'])) {
-			$record['extra']['REQUEST_URI'] = $_SERVER['REQUEST_URI'];
-		}
-		if (isset($_SERVER['HTTP_REFERER'])) {
-			$record['extra']['HTTP_REFERER'] = $_SERVER['HTTP_REFERER'];
-		}
 		if (isset($_SESSION['auth']['parent_engine_id'])) {
 			$record['extra']['parent_engine_id'] = $_SESSION['auth']['parent_engine_id'];
 		}
