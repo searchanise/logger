@@ -2,7 +2,7 @@
 
 Monolog bootstrap with predefined formatter and registered error handler.
 
-Additionaly will add `ENGINE_ID`, `HTTP_REFERER` and `REQUEST_URI` if exist.
+Additionally, will add `ENGINE_ID`, `HTTP_REFERER` and `REQUEST_URI` if existed.
 
 # Install
 
