@@ -15,12 +15,17 @@
   "autoload": {
     "files": [
       "src/bootstrap.php"
-    ]
+    ],
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
   },
   "require": {
     "monolog/monolog": "^1.26"
   },
   "require-dev": {
+    "mikey179/vfsstream": "^1.6",
+    "phpunit/phpunit": "^9.5",
     "roave/security-advisories": "dev-latest"
   }
 }
