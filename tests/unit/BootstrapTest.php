@@ -2,9 +2,15 @@
 
 namespace Tests\unit;
 
+use Closure;
+use Monolog\Handler\StreamHandler;
+use Monolog\Handler\TestHandler;
+use Monolog\Processor\GitProcessor;
+use Monolog\Processor\MemoryUsageProcessor;
+use Monolog\Processor\WebProcessor;
 use PHPUnit\Framework\TestCase;
 use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamDirectory;
+use function Searchanise\Logger\bootstrap;
 
 final class BootstrapTest extends TestCase
 {
@@ -15,10 +21,9 @@ final class BootstrapTest extends TestCase
         $channelName = 'core';
         $logFileName = '/var/log/searchanise/core.log';
 
-        $logger = \Searchanise\Logger\bootstrap($channelName, $logFileName, ['project' => 'core']);
+        $logger = bootstrap($channelName, $logFileName, ['project' => 'core']);
 
         $this->assertIsObject($logger, "Logger is not an object!");
-        $this->assertTrue($logger instanceof \Monolog\Logger, "Logger is not instance of Monolog\Logger!");
         $this->assertEquals($channelName, $logger->getName(), "Returned logger name is not equal {$channelName}");
     }
 
@@ -27,12 +32,12 @@ final class BootstrapTest extends TestCase
         $channelName = 'core';
         $logFileName = '/var/log/searchanise/core.log';
 
-        $logger = \Searchanise\Logger\bootstrap($channelName, $logFileName, ['project' => 'wix']);
+        $logger = bootstrap($channelName, $logFileName, ['project' => 'wix']);
 
-        $this->assertTrue($logger->popProcessor() instanceof \Closure);
-        $this->assertTrue($logger->popProcessor() instanceof \Monolog\Processor\MemoryUsageProcessor);
-        $this->assertTrue($logger->popProcessor() instanceof \Monolog\Processor\GitProcessor);
-        $this->assertTrue($logger->popProcessor() instanceof \Monolog\Processor\WebProcessor);
+        $this->assertInstanceOf(Closure::class, $logger->popProcessor());
+        $this->assertInstanceOf(MemoryUsageProcessor::class, $logger->popProcessor());
+        $this->assertInstanceOf(GitProcessor::class, $logger->popProcessor());
+        $this->assertInstanceOf(WebProcessor::class, $logger->popProcessor());
     }
 
     public function testHandler()
@@ -40,7 +45,7 @@ final class BootstrapTest extends TestCase
         $channelName = 'core';
         $logFileName = '/var/log/searchanise/core.log';
 
-        $logger = \Searchanise\Logger\bootstrap($channelName, $logFileName, ['project' => 'wix']);
+        $logger = bootstrap($channelName, $logFileName, ['project' => 'wix']);
         $this->assertEquals($logFileName, $logger->popHandler()->getUrl(), "Log handler stream is not equal {$logFileName}");
     }
 
@@ -50,14 +55,14 @@ final class BootstrapTest extends TestCase
         $channelName = 'core';
         $logFileName = '/var/log/searchanise/core.log';
 
-        $logger = \Searchanise\Logger\bootstrap($channelName, $logFileName, ['project' => 'core']);
+        $logger = bootstrap($channelName, $logFileName, ['project' => 'core']);
 
         $logger->popHandler();
-        $handler = new \Monolog\Handler\TestHandler;
+        $handler = new TestHandler;
         $logger->pushHandler($handler);
         $logger->warning('test');
 
-        list($record) = $handler->getRecords();
+        [$record] = $handler->getRecords();
         $this->assertEquals($channelName, $record['channel']);
         $this->assertEquals('test', $record['message']);
         $this->assertEquals('core', $record['extra']['project']);
@@ -70,9 +75,9 @@ final class BootstrapTest extends TestCase
         $channelName = 'core';
         $logFileName = 'var/log/searchanise/core.log';
 
-        $logger = \Searchanise\Logger\bootstrap($channelName, '/' . $logFileName, ['project' => 'core']);
+        $logger = bootstrap($channelName, '/' . $logFileName, ['project' => 'core']);
         $logger->popHandler();
-        $logger->pushHandler(new \Monolog\Handler\StreamHandler(vfsStream::url($logFileName)));
+        $logger->pushHandler(new StreamHandler(vfsStream::url($logFileName)));
 
         $logger->debug('debug');
         $logger->info('info');
@@ -86,13 +91,13 @@ final class BootstrapTest extends TestCase
         $this->assertTrue($this->root->hasChild($logFileName));
 
         $content = $this->root->getChild($logFileName)->getContent();
-        $this->assertTrue((bool) preg_match('/core.DEBUG: debug/m', $content));
-        $this->assertTrue((bool) preg_match('/core.INFO: info/m', $content));
-        $this->assertTrue((bool) preg_match('/core.NOTICE: notice/m', $content));
-        $this->assertTrue((bool) preg_match('/core.WARNING: warning/m', $content));
-        $this->assertTrue((bool) preg_match('/core.ERROR: error/m', $content));
-        $this->assertTrue((bool) preg_match('/core.CRITICAL: critical/m', $content));
-        $this->assertTrue((bool) preg_match('/core.ALERT: alert/m', $content));
-        $this->assertTrue((bool) preg_match('/core.EMERGENCY: emergency/m', $content));
+        $this->assertTrue((bool)preg_match('/core.DEBUG: debug/m', $content));
+        $this->assertTrue((bool)preg_match('/core.INFO: info/m', $content));
+        $this->assertTrue((bool)preg_match('/core.NOTICE: notice/m', $content));
+        $this->assertTrue((bool)preg_match('/core.WARNING: warning/m', $content));
+        $this->assertTrue((bool)preg_match('/core.ERROR: error/m', $content));
+        $this->assertTrue((bool)preg_match('/core.CRITICAL: critical/m', $content));
+        $this->assertTrue((bool)preg_match('/core.ALERT: alert/m', $content));
+        $this->assertTrue((bool)preg_match('/core.EMERGENCY: emergency/m', $content));
     }
 }
