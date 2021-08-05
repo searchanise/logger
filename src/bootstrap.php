@@ -22,7 +22,7 @@ use Monolog\Processor\WebProcessor;
  * @throws Exception                If a missing directory is not buildable
  * @throws InvalidArgumentException If stream is not a resource or string
  */
-function bootstrap($channelName, $logFileName, $extra = [])
+function bootstrap(string $channelName, string $logFileName, array $extra = []): Logger
 {
 	$log = new Logger($channelName);
 	$handler = new StreamHandler($logFileName);
