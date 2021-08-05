@@ -21,6 +21,7 @@
     }
   },
   "require": {
+    "php": ">=7.4",
     "monolog/monolog": "^1.26"
   },
   "require-dev": {
