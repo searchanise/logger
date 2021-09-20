@@ -25,7 +25,6 @@ composer require searchanise/logger:^2.0
 # Usage
 
 ```php
-
 $channelName = 'core';
 $logFileName = '/var/log/searchanise/core.log';
 

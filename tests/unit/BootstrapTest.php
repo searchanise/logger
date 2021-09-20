@@ -8,8 +8,9 @@ use Monolog\Handler\TestHandler;
 use Monolog\Processor\GitProcessor;
 use Monolog\Processor\MemoryUsageProcessor;
 use Monolog\Processor\WebProcessor;
-use PHPUnit\Framework\TestCase;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\TestCase;
+
 use function Searchanise\Logger\bootstrap;
 
 final class BootstrapTest extends TestCase
@@ -46,7 +47,11 @@ final class BootstrapTest extends TestCase
         $logFileName = '/var/log/searchanise/core.log';
 
         $logger = bootstrap($channelName, $logFileName, ['project' => 'wix']);
-        $this->assertEquals($logFileName, $logger->popHandler()->getUrl(), "Log handler stream is not equal {$logFileName}");
+        $this->assertEquals(
+            $logFileName,
+            $logger->popHandler()->getUrl(),
+            "Log handler stream is not equal {$logFileName}"
+        );
     }
 
 
