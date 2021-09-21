@@ -13,11 +13,13 @@
         "sort-packages": true
     },
     "autoload": {
-        "files": [
-            "src/bootstrap.php"
-        ],
         "psr-4": {
-            "Tests\\": "tests/"
+            "Searchanise\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "tests\\": "tests"
         }
     },
     "require": {
