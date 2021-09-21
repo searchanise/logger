@@ -19,16 +19,15 @@ composer.json
 ```
 
 ```shell
-composer require searchanise/logger:^2.0
+composer require searchanise/logger
 ```
 
 # Usage
 
 ```php
-$channelName = 'core';
-$logFileName = '/var/log/searchanise/core.log';
+$loggerCore = Logger::getInstance('project-name')->getLogger('core');
+$loggerApi  = Logger::getInstance('project-name')->getLogger('api');
 
-$logger = Searchanise\Logger\bootstrap($channelName, $logFileName, ['project' => 'wix']);
-
-$logger->addInfo('This is info');
+$loggerCore->info('This is info');
+$loggerApi->error()('This is error');
 ```
