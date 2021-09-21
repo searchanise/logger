@@ -94,7 +94,7 @@ class Logger
         return $log;
     }
 
-    public function toPSRLogLevel($errorLevel)
+    public static function toPSRLogLevel($errorLevel)
     {
         $levels = [
             E_ERROR => LogLevel::CRITICAL,
@@ -121,7 +121,7 @@ class Logger
         return $levels[$errorLevel] ?? LogLevel::NOTICE;
     }
 
-    public function toHumanReadableString(array $messages): string
+    public static function toHumanReadableString(array $messages): string
     {
         return implode(', ', array_map(static function ($item) {return print_r($item, true);}, $messages));
     }
