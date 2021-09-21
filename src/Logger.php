@@ -58,7 +58,6 @@ class Logger
     }
 
     /**
-     *
      * @param string $channel
      * @param string $logFile
      * @param array $extra Any extra information
