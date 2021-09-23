@@ -1,32 +1,35 @@
 {
-  "name": "searchanise/logger",
-  "description": "Monolog bootstrap with predefined formatter and registered error handler",
-  "minimum-stability": "stable",
-  "license": "proprietary",
-  "authors": [
-    {
-      "name": "Oleg Shabashov",
-      "email": "oshabashov@cs-cart.com"
-    }
-  ],
-  "config": {
-    "sort-packages": true
-  },
-  "autoload": {
-    "files": [
-      "src/bootstrap.php"
+    "name": "searchanise/logger",
+    "description": "Monolog bootstrap with predefined formatter and registered error handler",
+    "minimum-stability": "stable",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Oleg Shabashov",
+            "email": "oshabashov@cs-cart.com"
+        }
     ],
-    "psr-4": {
-      "Tests\\": "tests/"
+    "config": {
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Searchanise\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "tests\\": "tests"
+        }
+    },
+    "require": {
+        "php": ">=7.4",
+        "monolog/monolog": "^2.3"
+    },
+    "require-dev": {
+        "mikey179/vfsstream": "^1.6",
+        "phpunit/phpunit": "^9.5",
+        "roave/security-advisories": "dev-latest",
+        "ext-json": "*"
     }
-  },
-  "require": {
-    "php": ">=7.4",
-    "monolog/monolog": "^2.3"
-  },
-  "require-dev": {
-    "mikey179/vfsstream": "^1.6",
-    "phpunit/phpunit": "^9.5",
-    "roave/security-advisories": "dev-latest"
-  }
 }
