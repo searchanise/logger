@@ -1,4 +1,4 @@
-namespace: Tests\Unit
+namespace: Tests\unit
 suites:
   unit:
     path: ./unit
