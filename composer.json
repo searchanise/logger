@@ -27,9 +27,11 @@
         "monolog/monolog": "^2.3"
     },
     "require-dev": {
+        "ext-json": "*",
+        "codeception/codeception": "^4.1",
         "mikey179/vfsstream": "^1.6",
         "phpunit/phpunit": "^9.5",
         "roave/security-advisories": "dev-latest",
-        "ext-json": "*"
+        "codeception/module-asserts": "^1.0.0"
     }
 }

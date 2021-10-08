@@ -2,17 +2,12 @@
 
 namespace tests\unit;
 
-use Closure;
+use Codeception\Test\Unit;
 use Monolog\Handler\TestHandler;
-use Monolog\Logger as MonologLogger;
-use Monolog\Processor\GitProcessor;
-use Monolog\Processor\MemoryUsageProcessor;
-use Monolog\Processor\WebProcessor;
 use org\bovigo\vfs\vfsStream;
-use PHPUnit\Framework\TestCase;
 use Searchanise\Logger;
 
-final class LoggerTest extends TestCase
+class LoggerTest extends Unit
 {
     private Logger $loggerSingleton;
 
@@ -22,7 +17,6 @@ final class LoggerTest extends TestCase
         $secondCall = Logger::getInstance('useless');
         $thirdCall = Logger::getInstance('will be test anyway');
 
-        $this->assertInstanceOf(Logger::class, $firstCall);
         $this->assertSame($firstCall, $secondCall);
         $this->assertSame($secondCall, $thirdCall);
 
@@ -36,21 +30,8 @@ final class LoggerTest extends TestCase
         $firstCall = $this->loggerSingleton->getLogger('core');
         $secondCall = $this->loggerSingleton->getLogger('api');
 
-        $this->assertInstanceOf(MonologLogger::class, $firstCall);
-        $this->assertInstanceOf(MonologLogger::class, $secondCall);
-
         $this->assertEquals('core', $firstCall->getName());
         $this->assertEquals('api', $secondCall->getName());
-    }
-
-    public function testProcessorsExists(): void
-    {
-        $logger = $this->loggerSingleton->getLogger('core');
-
-        $this->assertInstanceOf(Closure::class, $logger->popProcessor());
-        $this->assertInstanceOf(MemoryUsageProcessor::class, $logger->popProcessor());
-        $this->assertInstanceOf(GitProcessor::class, $logger->popProcessor());
-        $this->assertInstanceOf(WebProcessor::class, $logger->popProcessor());
     }
 
     public function testLogFileNameIsBasedOnTheProject(): void
@@ -104,6 +85,24 @@ final class LoggerTest extends TestCase
             ],
             $content
         );
+    }
+
+    public function testLoggerUseEngineIdFromSession(): void
+    {
+        $_SESSION['auth']['parent_engine_id'] = 8908;
+        $_SESSION['auth']['current_engine_id'] = 1001;
+
+        $logger = $this->loggerSingleton->getLogger('core');
+
+        $logger->popHandler();
+        $handler = new TestHandler;
+        $logger->pushHandler($handler);
+
+        $logger->info('info record');
+
+        [$record] = $handler->getRecords();
+        $this->assertEquals(8908, $record['context']['parent_engine_id']);
+        $this->assertEquals(1001, $record['context']['current_engine_id']);
     }
 
     protected function setUp(): void
