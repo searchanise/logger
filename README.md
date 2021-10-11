@@ -29,5 +29,11 @@ $loggerCore = Logger::getInstance('project-name')->getLogger('core');
 $loggerApi  = Logger::getInstance('project-name')->getLogger('api');
 
 $loggerCore->info('This is info');
-$loggerApi->error()('This is error');
+$loggerApi->error('This is error');
+```
+
+# Tests
+
+```shell
+./vendor/bin/codecept run
 ```
