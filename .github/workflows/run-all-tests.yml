@@ -1,0 +1,13 @@
+name: Run All Codeception tests
+on: [pull_request]
+jobs:
+  Run-Codecept-Tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+      - uses: ramsey/composer-install@v1
+      - run: ${{ github.workspace }}/vendor/bin/codecept run
