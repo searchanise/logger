@@ -12,6 +12,9 @@ jobs:
           php-version: 7.4
       - name: Install Composer dependencies
       - uses: ramsey/composer-install@v1
-      - name: Run Codeception tests
+#      - name: Run Codeception tests
+#        run: |
+#          ${{ github.workspace }}/vendor/bin/codecept run
+      - name: List files in the repository
         run: |
-          ${{ github.workspace }}/vendor/bin/codecept run
+          ls ${{ github.workspace }}
