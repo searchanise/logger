@@ -9,5 +9,25 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: 7.4
-      - uses: ramsey/composer-install@v1
+      - name: Validate composer.json
+        uses: php-actions/composer@v6
+        with:
+          command: validate
+          version: 2
+      - name: Install Composer dependencies
+        uses: php-actions/composer@v6
+        with:
+          version: 2
+      - uses: michaelw90/PHP-Lint@master
+      - uses: actions/cache@v2
+        id: cache-db
+        with:
+          path: ~/.symfony/cache
+          key: db
+      - uses: symfonycorp/security-checker-action@v2
+        with:
+          disable-exit-code: 1
+        id: security-check
+      - name: Display the vulnerabilities as JSON
+        run: echo ${{ steps.security-check.outputs.vulns }}
       - run: ${{ github.workspace }}/vendor/bin/codecept run
