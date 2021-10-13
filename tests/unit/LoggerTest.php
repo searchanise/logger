@@ -52,7 +52,7 @@ class LoggerTest extends Unit
 
         [$record] = $handler->getRecords();
         $this->assertEquals($channelName, $record['channel']);
-        $this->assertEquals('warning record', $record['message']);
+        $this->assertEquals('123warning record', $record['message']);
         $this->assertEquals('test', $record['extra']['project']);
     }
 
