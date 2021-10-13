@@ -1,5 +1,5 @@
-name: GitHub Actions Demo
-on: [push]
+name: Run All Codeception tests
+on: [push, pull_request]
 jobs:
   Run-Codecept-Tests:
     runs-on: ubuntu-latest
