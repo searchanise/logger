@@ -13,5 +13,5 @@ jobs:
       - name: Install Composer dependencies
       - uses: ramsey/composer-install@v1
       - name: Run Codeception tests
-      run: |
-        ${{ github.workspace }}/vendor/bin/codecept run
+        run: |
+          ${{ github.workspace }}/vendor/bin/codecept run
