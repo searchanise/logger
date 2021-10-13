@@ -79,11 +79,11 @@ class Logger
         $log->pushProcessor(new MemoryUsageProcessor());
 
         $log->pushProcessor(function ($record) use ($extra) {
-            if (isset($_SESSION['auth']['parent_engine_id'])) {
-                $record['extra']['parent_engine_id'] = $_SESSION['auth']['parent_engine_id'];
+            if (isset($_SESSION['auth']['parent_engine_id']) && !isset($record['context']['parent_engine_id'])) {
+                $record['context']['parent_engine_id'] = $_SESSION['auth']['parent_engine_id'];
             }
-            if (isset($_SESSION['auth']['current_engine_id'])) {
-                $record['extra']['current_engine_id'] = $_SESSION['auth']['current_engine_id'];
+            if (isset($_SESSION['auth']['current_engine_id']) && !isset($record['context']['engine_id'])) {
+                $record['context']['engine_id'] = $_SESSION['auth']['current_engine_id'];
             }
 
             $record['extra'] = array_merge($record['extra'], $extra);
