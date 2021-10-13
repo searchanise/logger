@@ -1,14 +1,17 @@
 name: GitHub Actions Demo
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  Run-Codecept-Tests:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
+      - name: Install PHP
       - uses: shivammathur/setup-php@v2
         with:
           php-version: 7.4
+      - name: Install Composer dependencies
       - uses: ramsey/composer-install@v1
-      - name: Codeception Action
-        uses: joelwmale/codeception-action@1.0.0
+      - name: Run Codeception tests
+      run: |
+        ${{ github.workspace }}/vendor/bin/codecept run
