@@ -10,14 +10,13 @@ jobs:
         with:
           php-version: 7.4
       - name: Validate composer.json
-        uses: php-actions/composer@v6
+        uses: MilesChou/composer-action@master
         with:
-          command: validate
-          version: 2
+          args: validate
       - name: Install Composer dependencies
-        uses: php-actions/composer@v6
+        uses: MilesChou/composer-action@master
         with:
-          version: 2
+          args: install
       - uses: michaelw90/PHP-Lint@master
       - uses: actions/cache@v2
         id: cache-db
