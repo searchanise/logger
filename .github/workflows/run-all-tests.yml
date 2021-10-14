@@ -10,11 +10,12 @@ jobs:
         with:
           php-version: 7.4
       - uses: ramsey/composer-install@v1
-      - run: which composer
-      - run: ls -1
       - run: composer validate
       - name: Check PHP syntax errors
         uses: overtrue/phplint@7.4
+        with:
+          path: .
+          options: --exclude=vendor
       - uses: actions/cache@v2
         id: cache-db
         with:
