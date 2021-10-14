@@ -1,5 +1,7 @@
 # Searchanise Logger
 
+[![Tests](https://github.com/searchanise/logger/actions/workflows/run-all-tests.yml/badge.svg)](https://github.com/searchanise/logger/actions/workflows/run-all-tests.yml)
+
 Monolog bootstrap with predefined formatter and registered error handler.
 
 Additionally, will add `ENGINE_ID`, `HTTP_REFERER` and `REQUEST_URI` if existed.
