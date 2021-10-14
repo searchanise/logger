@@ -1,4 +1,4 @@
-name: Run All Codeception tests
+name: Tests
 on: [pull_request]
 jobs:
   Run-Codecept-Tests:
