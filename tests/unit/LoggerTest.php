@@ -92,7 +92,7 @@ class LoggerTest extends Unit
         $_SESSION['auth']['parent_engine_id'] = 8908;
         $_SESSION['auth']['current_engine_id'] = 1001;
 
-        $logger = $this->loggerSingleton->getLogger('core');
+        $logger = $this->loggerSingleton->getLogger('test');
 
         $logger->popHandler();
         $handler = new TestHandler;
@@ -102,7 +102,25 @@ class LoggerTest extends Unit
 
         [$record] = $handler->getRecords();
         $this->assertEquals(8908, $record['context']['parent_engine_id']);
-        $this->assertEquals(1001, $record['context']['current_engine_id']);
+        $this->assertEquals(1001, $record['context']['engine_id']);
+    }
+
+    public function testLoggerWillOverwriteEngineIdFromSessionByContext(): void
+    {
+        $_SESSION['auth']['parent_engine_id'] = 8908;
+        $_SESSION['auth']['current_engine_id'] = 1001;
+
+        $logger = $this->loggerSingleton->getLogger('test');
+
+        $logger->popHandler();
+        $handler = new TestHandler;
+        $logger->pushHandler($handler);
+
+        $logger->info('info record', ['engine_id' => 6006]);
+
+        [$record] = $handler->getRecords();
+        $this->assertEquals(8908, $record['context']['parent_engine_id']);
+        $this->assertEquals(6006, $record['context']['engine_id']);
     }
 
     protected function setUp(): void
