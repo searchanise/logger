@@ -75,7 +75,6 @@ class Logger
         $log->pushHandler($handler);
 
         $log->pushProcessor(new WebProcessor());
-        $log->pushProcessor(new GitProcessor());
         $log->pushProcessor(new MemoryUsageProcessor());
 
         $log->pushProcessor(function ($record) use ($extra) {
