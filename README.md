@@ -30,8 +30,25 @@ composer require searchanise/logger
 $loggerCore = Logger::getInstance('project-name')->getLogger('core');
 $loggerApi  = Logger::getInstance('project-name')->getLogger('api');
 
-$loggerCore->info('This is info');
-$loggerApi->error('This is error');
+$loggerCore->info('This is info', ['engine_id' => 8902]);
+$loggerApi->error('This is error', ['parent_engine_id' => 5600]);
+```
+
+# How to pass Engine ID
+**Please note - ELK stack is awaiting Engine ID in record context by fields name `engine_id` or `parent_engine_id`** 
+
+Already built-in passing from `$_SESSION` during bootstrap:
+
+```php
+$record['context']['parent_engine_id'] = $_SESSION['auth']['parent_engine_id'];
+$record['context']['engine_id'] = $_SESSION['auth']['current_engine_id'];
+```
+
+Or explicitly by context for each record:
+
+```php
+Logger::getInstance('project-name')->getLogger('api')->critical('DB is gone', ['engine_id' => 8902]);
+Logger::getInstance('project-name')->getLogger('api')->critical('DB is gone', ['parent_engine_id' => 5600]);
 ```
 
 # Tests
