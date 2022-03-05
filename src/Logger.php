@@ -63,7 +63,7 @@ class Logger
 
     public function getLogFile() : string
     {
-        return "/var/log/searchanise/{$this->project}.log";
+        return "/var/log/searchanise/$this->project.log";
     }
 
     /**
@@ -126,7 +126,7 @@ class Logger
         ErrorHandler::register($logger);
     }
 
-    protected function setProcessors(\Monolog\Logger $log, array $extra = [])
+    protected function setProcessors(\Monolog\Logger $log, array $extra = []): void
     {
         $log->pushProcessor(new WebProcessor());
         $log->pushProcessor(new MemoryUsageProcessor());
