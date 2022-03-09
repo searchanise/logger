@@ -5,7 +5,6 @@ namespace Searchanise;
 use Monolog\ErrorHandler;
 use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\StreamHandler;
-use Monolog\Processor\GitProcessor;
 use Monolog\Processor\MemoryUsageProcessor;
 use Monolog\Processor\WebProcessor;
 use Psr\Log\LogLevel;
@@ -15,7 +14,19 @@ class Logger
     /** @var \Monolog\Logger[] */
     private array $loggers;
     private static ?Logger $instance = null;
+
+    /**
+     * Current project (api / core / wix and etc)
+     *
+     * @var string
+     */
     private string $project;
+
+    /**
+     * Current log file including full path
+     *
+     * @var string
+     */
     private string $logFile;
 
     private function __construct()
@@ -51,10 +62,15 @@ class Logger
     public function getLogger(string $channel): \Monolog\Logger
     {
         if (!isset($this->loggers[$channel]) || !$this->loggers[$channel] instanceof \Monolog\Logger) {
-            $this->loggers[$channel] = $this->bootstrap($channel, $this->logFile, ['project' => $this->project]);
+            $this->loggers[$channel] = $this->bootstrap($channel, $this->getLogFile(), ['project' => $this->project]);
         }
 
         return $this->loggers[$channel];
+    }
+
+    public function getLogFile() : string
+    {
+        return $this->logFile;
     }
 
     /**
@@ -74,21 +90,7 @@ class Logger
         $handler->setFormatter($formatter);
         $log->pushHandler($handler);
 
-        $log->pushProcessor(new WebProcessor());
-        $log->pushProcessor(new MemoryUsageProcessor());
-
-        $log->pushProcessor(function ($record) use ($extra) {
-            if (isset($_SESSION['auth']['parent_engine_id']) && !isset($record['context']['parent_engine_id'])) {
-                $record['context']['parent_engine_id'] = $_SESSION['auth']['parent_engine_id'];
-            }
-            if (isset($_SESSION['auth']['current_engine_id']) && !isset($record['context']['engine_id'])) {
-                $record['context']['engine_id'] = $_SESSION['auth']['current_engine_id'];
-            }
-
-            $record['extra'] = array_merge($record['extra'], $extra);
-
-            return $record;
-        });
+        $this->setProcessors($log, $extra);
 
         return $log;
     }
@@ -125,9 +127,28 @@ class Logger
         return implode(', ', array_map(static function ($item) {return print_r($item, true);}, $messages));
     }
 
-    private function registerErrorHandler(): void
+    protected function registerErrorHandler(): void
     {
-        $logger = $this->bootstrap('error', $this->logFile, ['project' => $this->project]);
+        $logger = $this->bootstrap('error', $this->getLogFile(), ['project' => $this->project]);
         ErrorHandler::register($logger);
+    }
+
+    protected function setProcessors(\Monolog\Logger $log, array $extra = []): void
+    {
+        $log->pushProcessor(new WebProcessor());
+        $log->pushProcessor(new MemoryUsageProcessor());
+
+        $log->pushProcessor(function ($record) use ($extra) {
+            if (isset($_SESSION['auth']['parent_engine_id']) && !isset($record['context']['parent_engine_id'])) {
+                $record['context']['parent_engine_id'] = $_SESSION['auth']['parent_engine_id'];
+            }
+            if (isset($_SESSION['auth']['current_engine_id']) && !isset($record['context']['engine_id'])) {
+                $record['context']['engine_id'] = $_SESSION['auth']['current_engine_id'];
+            }
+
+            $record['extra'] = array_merge($record['extra'], $extra);
+
+            return $record;
+        });
     }
 }
