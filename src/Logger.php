@@ -22,16 +22,21 @@ class Logger
      */
     private string $project;
 
+    /**
+     * Current log file including full path
+     *
+     * @var string
+     */
+    private string $logFile;
+
+    private function __construct()
+    {
+    }
     public function __wakeup()
     {
     }
     private function __clone()
     {
-    }
-
-    public function __construct($project)
-    {
-        $this->project = $project;
     }
 
     /**
@@ -46,6 +51,7 @@ class Logger
     {
         if (static::$instance === null) {
             static::$instance = new static($project);
+            static::$instance->logFile = "/var/log/searchanise/{$project}.log";
             static::$instance->registerErrorHandler();
         }
 
@@ -63,7 +69,7 @@ class Logger
 
     public function getLogFile() : string
     {
-        return "/var/log/searchanise/$this->project.log";
+        return $this->logFile;
     }
 
     /**
