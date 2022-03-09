@@ -50,8 +50,9 @@ class Logger
     public static function getInstance(string $project): Logger
     {
         if (static::$instance === null) {
-            static::$instance = new static($project);
-            static::$instance->logFile = "/var/log/searchanise/{$project}.log";
+            static::$instance = new static();
+            static::$instance->project = $project;
+            static::$instance->logFile = "/var/log/searchanise/$project.log";
             static::$instance->registerErrorHandler();
         }
 
