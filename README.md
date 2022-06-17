@@ -4,7 +4,7 @@
 
 Monolog bootstrap with predefined formatter and registered error handler.
 
-Additionally, will add `ENGINE_ID`, `HTTP_REFERER` and `REQUEST_URI` if existed.
+Additionally, will add `ENGINE_ID` if existed.
 
 # Install
 
@@ -54,5 +54,5 @@ Logger::getInstance('project-name')->getLogger('api')->critical('DB is gone', ['
 # Tests
 
 ```shell
-./vendor/bin/codecept run
+composer test
 ```
