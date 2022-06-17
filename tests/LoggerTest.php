@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\unit;
+namespace tests;
 
 use Monolog\Handler\TestHandler;
 use org\bovigo\vfs\vfsStream;
