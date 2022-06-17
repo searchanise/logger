@@ -6,8 +6,6 @@ namespace Searchanise;
 use Monolog\ErrorHandler;
 use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\StreamHandler;
-use Monolog\Processor\MemoryUsageProcessor;
-use Monolog\Processor\WebProcessor;
 use Psr\Log\LogLevel;
 
 class Logger
