@@ -123,7 +123,7 @@ class Logger
 
     public static function toHumanReadableString(array $messages): string
     {
-        return implode(', ', array_map(static function ($item) {return print_r($item, true);}, $messages));
+        return implode(', ', array_map(static fn($item) => print_r($item, true), $messages));
     }
 
     protected function registerErrorHandler(): void
