@@ -1,13 +1,13 @@
 <?php
 
-namespace tests\unit;
+namespace tests;
 
-use Codeception\Test\Unit;
 use Monolog\Handler\TestHandler;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\TestCase;
 use Searchanise\Logger;
 
-class LoggerTest extends Unit
+class LoggerTest extends TestCase
 {
     private Logger $loggerSingleton;
 

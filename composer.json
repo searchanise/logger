@@ -6,7 +6,7 @@
     "authors": [
         {
             "name": "Oleg Shabashov",
-            "email": "oshabashov@cs-cart.com"
+            "email": "oshabashov@searchanise.io"
         }
     ],
     "config": {
@@ -22,16 +22,17 @@
             "tests\\": "tests"
         }
     },
+    "scripts": {
+        "test": "./vendor/bin/phpunit ./tests"
+    },
     "require": {
         "php": "<8",
         "monolog/monolog": "^2.3"
     },
     "require-dev": {
         "ext-json": "*",
-        "codeception/codeception": "^4.1",
         "mikey179/vfsstream": "^1.6",
         "phpunit/phpunit": "^9.5",
-        "roave/security-advisories": "dev-latest",
-        "codeception/module-asserts": "^1.0.0"
+        "roave/security-advisories": "dev-latest"
     }
 }

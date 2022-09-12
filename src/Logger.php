@@ -1,12 +1,11 @@
 <?php
+declare (strict_types=1);
 
 namespace Searchanise;
 
 use Monolog\ErrorHandler;
 use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\StreamHandler;
-use Monolog\Processor\MemoryUsageProcessor;
-use Monolog\Processor\WebProcessor;
 use Psr\Log\LogLevel;
 
 class Logger
@@ -68,7 +67,7 @@ class Logger
         return $this->loggers[$channel];
     }
 
-    public function getLogFile() : string
+    public function getLogFile(): string
     {
         return $this->logFile;
     }
@@ -95,7 +94,7 @@ class Logger
         return $log;
     }
 
-    public static function toPSRLogLevel($errorLevel)
+    public static function toPSRLogLevel($errorLevel): string
     {
         $levels = [
             E_ERROR => LogLevel::CRITICAL,
@@ -124,7 +123,7 @@ class Logger
 
     public static function toHumanReadableString(array $messages): string
     {
-        return implode(', ', array_map(static function ($item) {return print_r($item, true);}, $messages));
+        return implode(', ', array_map(static fn($item) => print_r($item, true), $messages));
     }
 
     protected function registerErrorHandler(): void
@@ -135,9 +134,6 @@ class Logger
 
     protected function setProcessors(\Monolog\Logger $log, array $extra = []): void
     {
-        $log->pushProcessor(new WebProcessor());
-        $log->pushProcessor(new MemoryUsageProcessor());
-
         $log->pushProcessor(function ($record) use ($extra) {
             if (isset($_SESSION['auth']['parent_engine_id']) && !isset($record['context']['parent_engine_id'])) {
                 $record['context']['parent_engine_id'] = $_SESSION['auth']['parent_engine_id'];
