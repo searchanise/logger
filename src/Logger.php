@@ -142,7 +142,7 @@ class Logger
                 $record['context']['engine_id'] = $_SESSION['auth']['current_engine_id'];
             }
 
-            if (class_exists('Registry')) {
+            if (class_exists('Registry') && method_exists('Registry', 'getLogContext')) {
                  foreach (\Registry::getLogContext() as $key => $value) {
                     $record['context'][$key] ??= $value;
                  }
