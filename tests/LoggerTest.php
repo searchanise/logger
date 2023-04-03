@@ -69,7 +69,7 @@ class LoggerTest extends TestCase
         $content = $root->getChild($logFileName)->getContent();
         $this->assertJson($content);
 
-        $content = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+        $content = json_decode((string) $content, true, 512, JSON_THROW_ON_ERROR);
         unset($content['extra']['git'], $content['extra']['memory_usage'], $content['datetime']);
 
         $this->assertEquals(

@@ -14,7 +14,7 @@ composer.json
 "repositories": [
     {
       "url": "https://github.com/searchanise/logger",
-      "type": "vcs"
+      "type": "github"
     }
   ]
 ...

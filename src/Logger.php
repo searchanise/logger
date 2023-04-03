@@ -73,10 +73,7 @@ class Logger
     }
 
     /**
-     * @param string $channel
-     * @param string $logFile
      * @param array $extra Any extra information
-     * @return \Monolog\Logger
      */
     public function bootstrap(string $channel, string $logFile, array $extra = []): \Monolog\Logger
     {
