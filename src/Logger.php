@@ -132,20 +132,15 @@ class Logger
     protected function setProcessors(\Monolog\Logger $log, array $extra = []): void
     {
         $log->pushProcessor(function ($record) use ($extra) {
-            if (isset($_SESSION['auth']['parent_engine_id']) && !isset($record['context']['parent_engine_id'])) {
-                $record['context']['parent_engine_id'] = $_SESSION['auth']['parent_engine_id'];
-            }
-            if (isset($_SESSION['auth']['current_engine_id']) && !isset($record['context']['engine_id'])) {
-                $record['context']['engine_id'] = $_SESSION['auth']['current_engine_id'];
-            }
+            $context = $record->context;
 
             if (class_exists('Registry') && method_exists('Registry', 'getLogContext')) {
-                 foreach (\Registry::getLogContext() as $key => $value) {
-                    $record['context'][$key] ??= $value;
-                 }
+                foreach (\Registry::getLogContext() as $key => $value) {
+                    $context[$key] ??= $value;
+                }
             }
 
-            $record['extra'] = array_merge($record['extra'], $extra);
+            $record = $record->with(context: $context, extra: array_merge($record['extra'], $extra));
 
             return $record;
         });
