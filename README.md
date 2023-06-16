@@ -35,13 +35,12 @@ $loggerApi->error('This is error', ['parent_engine_id' => 5600]);
 ```
 
 # How to pass Engine ID
-**Please note - ELK stack is awaiting Engine ID in record context by fields name `engine_id` or `parent_engine_id`** 
+**Please note - ELK stack is awaiting Engine ID in record context by fields name `engine_id`** 
 
-Already built-in passing from `$_SESSION` during bootstrap:
+Already built-in passing from `Registry` during bootstrap used in CS-Cart-based repositorties:
 
 ```php
-$record['context']['parent_engine_id'] = $_SESSION['auth']['parent_engine_id'];
-$record['context']['engine_id'] = $_SESSION['auth']['current_engine_id'];
+Registry::setLogContext(['engine_id' => $engine_data['engine_id']);
 ```
 
 Or explicitly by context for each record:

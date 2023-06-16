@@ -21,10 +21,11 @@ jobs:
         with:
           path: ~/.symfony/cache
           key: db
-      - uses: symfonycorp/security-checker-action@v2
+      - uses: symfonycorp/security-checker-action@v4
         with:
           disable-exit-code: 1
         id: security-check
       - name: Display the vulnerabilities as JSON
         run: echo ${{ steps.security-check.outputs.vulns }}
-      - run: ${{ github.workspace }}/vendor/bin/codecept run
+      - run: sudo install -m 0775 -o $(id -u) -g $(id -g) -d /var/log/searchanise
+      - run: composer test
