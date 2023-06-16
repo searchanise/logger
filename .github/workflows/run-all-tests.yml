@@ -27,4 +27,5 @@ jobs:
         id: security-check
       - name: Display the vulnerabilities as JSON
         run: echo ${{ steps.security-check.outputs.vulns }}
+      - run: sudo install -m 0775 -o $(id -u) -g $(id -g) -d /var/log/searchanise
       - run: composer test
