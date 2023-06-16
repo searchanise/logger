@@ -27,4 +27,4 @@ jobs:
         id: security-check
       - name: Display the vulnerabilities as JSON
         run: echo ${{ steps.security-check.outputs.vulns }}
-      - run: ${{ github.workspace }}/vendor/bin/codecept run
+      - run: composer test
